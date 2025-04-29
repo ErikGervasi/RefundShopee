@@ -6,15 +6,15 @@ const app = express();
 const port = 3001;
 
 // Usando CORS para permitir que o frontend acesse o backend
-app.use(cors());
+app.use(cors());  // Permite todas as origens
 
 // Configuração do Multer para upload de arquivos
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/');
+        cb(null, './uploads/');  // Diretório onde os arquivos serão armazenados
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        cb(null, file.originalname);  // Nome do arquivo recebido
     }
 });
 
@@ -22,19 +22,19 @@ const upload = multer({ storage });
 
 // Endpoint para fazer o upload do arquivo
 app.post('/upload', upload.single('file'), (req, res) => {
-    console.log('Arquivo recebido:', req.file);  // Log para garantir que o arquivo foi recebido
+    console.log('Arquivo recebido:', req.file);  // Verificando o arquivo recebido
 
     if (!req.file) {
-        return res.status(400).send('Nenhum arquivo foi enviado.');
+        return res.status(400).json({ error: 'Nenhum arquivo foi enviado.' });  // Retorna erro em JSON
     }
 
-    const filePath = req.file.path;
+    const filePath = req.file.path;  // Caminho do arquivo enviado
 
     // Ler o arquivo Excel usando XLSX
     const workbook = XLSX.readFile(filePath);
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(sheet);
+    const data = XLSX.utils.sheet_to_json(sheet);  // Convertendo o conteúdo da planilha para JSON
 
     // Filtrando as informações necessárias
     const result = data.map(item => ({
@@ -43,11 +43,12 @@ app.post('/upload', upload.single('file'), (req, res) => {
         status: item['Status na Plataforma']
     }));
 
+    // Resposta em formato JSON
     res.json(result);
 });
 
 // Servir o frontend
-app.use(express.static('public'));
+app.use(express.static('public'));  // Serve os arquivos estáticos do frontend
 
 // Iniciar o servidor
 app.listen(port, () => {
