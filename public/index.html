@@ -39,32 +39,29 @@
             const fileInput = document.getElementById('file-input');
             formData.append('file', fileInput.files[0]);
 
-            fetch('http://localhost:3001/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Falha na requisição: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
-                tableBody.innerHTML = ''; // Limpar tabela antes de adicionar novos dados
+            fetch('https://refund-shopee.vercel.app/upload', {
+    method: 'POST',
+    body: formData
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Dados recebidos:', data);  // Verifique os dados recebidos
+    const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = ''; // Limpar tabela antes de adicionar novos dados
 
-                // Preencher tabela com dados processados
-                data.forEach(item => {
-                    const row = tableBody.insertRow();
-                    row.insertCell(0).textContent = item.pedido;
-                    row.insertCell(1).textContent = item.motivoDevolucao;
-                    row.insertCell(2).textContent = item.status;
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao enviar arquivo:', error);
-                alert('Erro ao enviar arquivo: ' + error.message);
-            });
+    // Preencher tabela com dados processados
+    data.forEach(item => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = item.pedido;
+        row.insertCell(1).textContent = item.motivoDevolucao;
+        row.insertCell(2).textContent = item.status;
+    });
+})
+.catch(error => {
+    console.error('Erro ao enviar arquivo:', error);  // Exibe o erro para o console
+    alert('Erro ao enviar arquivo: ' + error.message);  // Exibe o erro para o usuário
+});
+
         });
     </script>
 </body>
