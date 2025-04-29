@@ -42,7 +42,7 @@
 
             console.log('Arquivo enviado:', fileInput.files[0]);  // Verificar arquivo no console
 
-            fetch('https://refund-shopee.vercel.app/upload', {  // URL do backend no Vercel
+            fetch('https://refund-shopee.vercel.app', {  // URL do backend no Vercel
                 method: 'POST',
                 body: formData
             })
