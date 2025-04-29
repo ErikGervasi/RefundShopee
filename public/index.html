@@ -32,44 +32,44 @@
     </div>
 
     <script>
-        // Previne o envio padrão do formulário
         document.getElementById('upload-form').addEventListener('submit', function(event) {
-            event.preventDefault();
+            event.preventDefault();  // Previne o envio do formulário e recarregamento da página
 
             const formData = new FormData();
             const fileInput = document.getElementById('file-input');
             formData.append('file', fileInput.files[0]);
 
-            console.log('Arquivo enviado:', fileInput.files[0]);  // Verificar arquivo no console
+            console.log('Arquivo enviado:', fileInput.files[0]);  // Verifica o arquivo enviado
 
-            fetch('https://refund-shopee.vercel.app/upload', {
-    method: 'POST',
-    body: formData
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Falha na requisição: ' + response.status);
-    }
-    return response.json();  // Processa a resposta JSON
-})
-.then(data => {
-    console.log('Dados recebidos:', data);
-    const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
-    tableBody.innerHTML = '';  // Limpar tabela antes de adicionar novos dados
+            // Envia o arquivo para o backend hospedado no Vercel
+            fetch('https://refund-shopee.vercel.app/upload', {  // URL do seu backend no Vercel
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log("Resposta do backend:", response);
+                if (!response.ok) {
+                    throw new Error('Falha na requisição: ' + response.status);
+                }
+                return response.json();  // Processa a resposta como JSON
+            })
+            .then(data => {
+                console.log('Dados recebidos:', data);  // Verifica os dados recebidos
+                const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = '';  // Limpa a tabela antes de adicionar novos dados
 
-    // Preencher tabela com dados processados
-    data.forEach(item => {
-        const row = tableBody.insertRow();
-        row.insertCell(0).textContent = item.pedido;
-        row.insertCell(1).textContent = item.motivoDevolucao;
-        row.insertCell(2).textContent = item.status;
-    });
-})
-.catch(error => {
-    console.error('Erro ao enviar arquivo:', error);  // Exibe o erro para o console
-    alert('Erro ao enviar arquivo: ' + error.message);  // Exibe o erro para o usuário
-});
-
+                // Preenche a tabela com os dados recebidos
+                data.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).textContent = item.pedido;
+                    row.insertCell(1).textContent = item.motivoDevolucao;
+                    row.insertCell(2).textContent = item.status;
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao enviar arquivo:', error);
+                alert('Erro ao enviar arquivo: ' + error.message);
+            });
         });
     </script>
 </body>
