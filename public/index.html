@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Tabela Shopee</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Upload da Tabela de Devoluções da Shopee</h1>
+
+        <!-- Formulário para upload -->
+        <form id="upload-form" enctype="multipart/form-data" class="upload-form">
+            <input type="file" id="file-input" name="file" accept=".xlsx,.xls" required class="file-input">
+            <button type="submit" class="submit-btn">Enviar</button>
+        </form>
+
+        <h2 class="table-title">Devoluções Processadas</h2>
+        <table id="tabela-devolucoes" class="data-table">
+            <thead>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Motivo da Devolução</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Os dados da tabela serão inseridos aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();  // Impede o envio do formulário
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('file-input');
+            formData.append('file', fileInput.files[0]);
+
+            fetch('http://localhost:3001/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Falha na requisição: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = ''; // Limpar tabela antes de adicionar novos dados
+
+                // Preencher tabela com dados processados
+                data.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).textContent = item.pedido;
+                    row.insertCell(1).textContent = item.motivoDevolucao;
+                    row.insertCell(2).textContent = item.status;
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao enviar arquivo:', error);
+                alert('Erro ao enviar arquivo: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
