@@ -11,18 +11,18 @@ app.use(cors());  // Permite todas as origens
 // Configuração do Multer para upload de arquivos
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/');  // Diretório onde os arquivos serão armazenados
+        cb(null, './uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);  // Nome do arquivo recebido
+        cb(null, file.originalname);
     }
 });
 
 const upload = multer({ storage });
 
-// Endpoint para fazer o upload do arquivo
+// Rota para receber o arquivo (POST)
 app.post('/upload', upload.single('file'), (req, res) => {
-    console.log('Arquivo recebido:', req.file);  // Verificando o arquivo recebido
+    console.log('Arquivo recebido:', req.file);  // Log para garantir que o arquivo foi recebido
 
     if (!req.file) {
         return res.status(400).json({ error: 'Nenhum arquivo foi enviado.' });  // Retorna erro em JSON

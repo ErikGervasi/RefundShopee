@@ -42,34 +42,34 @@
 
             console.log('Arquivo enviado:', fileInput.files[0]);  // Verificar arquivo no console
 
-            fetch('https://refund-shopee.vercel.app/upload', {  // URL do backend no Vercel
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                console.log("Resposta do backend:", response);
-                if (!response.ok) {
-                    throw new Error('Falha na requisição: ' + response.status);
-                }
-                return response.json();  // Processa a resposta JSON
-            })
-            .then(data => {
-                console.log('Dados recebidos:', data);  // Verificar os dados recebidos
-                const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
-                tableBody.innerHTML = '';  // Limpar tabela antes de adicionar novos dados
+            fetch('https://refund-shopee.vercel.app/upload', {
+    method: 'POST',
+    body: formData
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Falha na requisição: ' + response.status);
+    }
+    return response.json();  // Processa a resposta JSON
+})
+.then(data => {
+    console.log('Dados recebidos:', data);
+    const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = '';  // Limpar tabela antes de adicionar novos dados
 
-                // Preencher a tabela com os dados processados
-                data.forEach(item => {
-                    const row = tableBody.insertRow();
-                    row.insertCell(0).textContent = item.pedido;
-                    row.insertCell(1).textContent = item.motivoDevolucao;
-                    row.insertCell(2).textContent = item.status;
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao enviar arquivo:', error);  // Exibe o erro no console
-                alert('Erro ao enviar arquivo: ' + error.message);  // Exibe o erro para o usuário
-            });
+    // Preencher tabela com dados processados
+    data.forEach(item => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = item.pedido;
+        row.insertCell(1).textContent = item.motivoDevolucao;
+        row.insertCell(2).textContent = item.status;
+    });
+})
+.catch(error => {
+    console.error('Erro ao enviar arquivo:', error);  // Exibe o erro para o console
+    alert('Erro ao enviar arquivo: ' + error.message);  // Exibe o erro para o usuário
+});
+
         });
     </script>
 </body>
