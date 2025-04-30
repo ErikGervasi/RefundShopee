@@ -24,7 +24,7 @@
                     <th>Quantidade</th>
                     <th>Status - ACCEPTED</th>
                     <th>Status - PROCESSING</th>
-                    <th>Status - RECUSED</th>
+                    <th>Status - CANCELLED</th>
                     <th>Devolução Paga pelo Vendedor (R$)</th> <!-- Nova coluna -->
                 </tr>
             </thead>
@@ -86,7 +86,7 @@
                             statusCount: {
                                 ACCEPTED: 0,
                                 PROCESSING: 0,
-                                RECUSED: 0
+                                CANCELLED: 0
                             },
                             vendedorFrete: 0  // Nova chave para contar o frete pago pelo vendedor
                         };
@@ -106,8 +106,8 @@
                         }
                     } else if (status === 'PROCESSING') {
                         motivoContagem[motivo].statusCount.PROCESSING += 1;
-                    } else if (status === 'RECUSED') {
-                        motivoContagem[motivo].statusCount.RECUSED += 1;
+                    } else if (status === 'CANCELLED') {
+                        motivoContagem[motivo].statusCount.CANCELLED += 1;
                     }
                 });
 
@@ -122,7 +122,7 @@
                     row.insertCell(1).textContent = motivoContagem[motivo].count;
                     row.insertCell(2).textContent = motivoContagem[motivo].statusCount.ACCEPTED;
                     row.insertCell(3).textContent = motivoContagem[motivo].statusCount.PROCESSING;
-                    row.insertCell(4).textContent = motivoContagem[motivo].statusCount.RECUSED;
+                    row.insertCell(4).textContent = motivoContagem[motivo].statusCount.CANCELLED;
                     row.insertCell(5).textContent = motivoContagem[motivo].vendedorFrete.toFixed(2);  // Exibe o valor do frete com 2 casas decimais
                 }
 
