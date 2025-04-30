@@ -40,6 +40,17 @@
     </div>
 
     <script>
+        // Mapeamento de códigos para nomes amigáveis
+        const motivoMap = {
+            'WRONG_ITEM': 'Item Errado',
+            'ITEM_NOT_FIT': 'Não Serviu',
+            'CHANGE_MIND': 'Mudei de Ideia',
+            'ITEM_MISSING': 'Item Faltando',
+            'FUNCTIONAL_DMG': 'Item Danificado',
+            'NOT_RECEIPT': 'Não Recebi',
+            'DAMAGED_OTHERS': 'Outros Danos'
+        };
+
         document.getElementById('upload-form').addEventListener('submit', function(event) {
             event.preventDefault();  // Previne o envio do formulário e recarregamento da página
 
@@ -50,7 +61,7 @@
             console.log('Arquivo enviado:', fileInput.files[0]);  // Verifica o arquivo enviado
 
             // Envia o arquivo para o backend local
-            fetch('http://localhost:3001/upload', {  // Mudança para localhost com a porta 3001
+            fetch('http://localhost:3001/upload', {
                 method: 'POST',
                 body: formData
             })
@@ -61,53 +72,58 @@
                 return response.json();  // Processa a resposta como JSON
             })
             .then(data => {
-                // Contabilizando a quantidade de cada motivo, ignorando os comentários e células vazias
                 const motivoContagem = {};
                 let totalPagoVendedor = 0;  // Inicializa o total pago pelo vendedor
 
                 data.forEach(item => {
                     let motivo = item.motivoDevolucao;
-                    const status = item.status;  // Pegando o status
+                    const status = item.status;
 
-                    // Ignora motivos ou status vazios (undefined ou null)
+                    // Ignora registros com motivo ou status vazio
                     if (!motivo || motivo.trim() === '' || !status || status.trim() === '') {
-                        return;  // Se estiver vazio ou undefined, ignora e passa para o próximo item
+                        return;
                     }
 
                     // Se houver comentário após o motivo (separado por vírgula), pegamos apenas a parte antes da vírgula
                     if (motivo.includes(',')) {
-                        motivo = motivo.split(',')[0];  // Pega a parte antes da vírgula
+                        motivo = motivo.split(',')[0];
                     }
 
+                    // Salva o motivo original ANTES de mapear
+                    const motivoOriginal = motivo;
+
+                    // Mapeia o motivo para o nome amigável
+                    const motivoNomeAmigavel = motivoMap[motivoOriginal] || motivoOriginal;
+
                     // Inicializa a contagem do motivo, se necessário
-                    if (!motivoContagem[motivo]) {
-                        motivoContagem[motivo] = {
+                    if (!motivoContagem[motivoNomeAmigavel]) {
+                        motivoContagem[motivoNomeAmigavel] = {
                             count: 0,
                             statusCount: {
                                 ACCEPTED: 0,
                                 PROCESSING: 0,
                                 CANCELLED: 0
                             },
-                            vendedorFrete: 0  // Nova chave para contar o frete pago pelo vendedor
+                            vendedorFrete: 0  // Inicializa o frete pago como 0
                         };
                     }
 
                     // Incrementa a contagem do motivo
-                    motivoContagem[motivo].count += 1;
+                    motivoContagem[motivoNomeAmigavel].count += 1;
 
-                    // Contabiliza o status
+                    // Verifica se o status é "ACCEPTED" e se o motivo é um dos que requer pagamento de frete
                     if (status === 'ACCEPTED') {
-                        motivoContagem[motivo].statusCount.ACCEPTED += 1;
+                        motivoContagem[motivoNomeAmigavel].statusCount.ACCEPTED += 1;
 
-                        // Se for um dos motivos que o vendedor paga o frete, soma 10 reais
-                        if (['WRONG_ITEM', 'ITEM_MISSING', 'FUNCTIONAL_DMG', 'DAMAGED_OTHERS'].includes(motivo)) {
-                            motivoContagem[motivo].vendedorFrete += 10;  // Adiciona R$ 10 para cada "ACCEPTED"
+                        // Se o motivo for um dos que o vendedor paga o frete, soma 10 reais
+                        if (['WRONG_ITEM', 'ITEM_MISSING', 'FUNCTIONAL_DMG', 'DAMAGED_OTHERS'].includes(motivoOriginal)) {
+                            motivoContagem[motivoNomeAmigavel].vendedorFrete += 10;  // Adiciona R$ 10 para cada item "ACCEPTED"
                             totalPagoVendedor += 10;  // Adiciona ao total pago pelo vendedor
                         }
                     } else if (status === 'PROCESSING') {
-                        motivoContagem[motivo].statusCount.PROCESSING += 1;
+                        motivoContagem[motivoNomeAmigavel].statusCount.PROCESSING += 1;
                     } else if (status === 'CANCELLED') {
-                        motivoContagem[motivo].statusCount.CANCELLED += 1;
+                        motivoContagem[motivoNomeAmigavel].statusCount.CANCELLED += 1;
                     }
                 });
 
