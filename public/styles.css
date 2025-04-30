@@ -137,10 +137,37 @@ body {
 /* Estilo para a última coluna de valor */
 .data-table td:last-child {
     font-weight: 600;
-    color: #d60909;
+    color: #860606;
 }
 
-/* Responsividade */
+/* Estilo do total pago pelo vendedor */
+#total-vendedor {
+    display: none;  /* Inicialmente oculto */
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #7a0404;  /* Cor de fundo verde */
+    color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Destaque para o valor total */
+#total-vendedor-valor {
+    font-size: 24px;  /* Tamanho maior para o valor */
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Efeito ao passar o mouse (hover) sobre o total */
+#total-vendedor:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);  /* Aumenta o sombreamento */
+}
+
+/* Responsividade - ajustes para telas menores */
 @media (max-width: 768px) {
     .container {
         width: 100%;
@@ -157,5 +184,15 @@ body {
 
     .table-title {
         font-size: 20px;
+    }
+
+    #total-vendedor {
+        font-size: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #total-vendedor-valor {
+        font-size: 22px;  /* Ajusta o tamanho da fonte para telas pequenas */
     }
 }

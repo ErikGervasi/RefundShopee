@@ -22,9 +22,9 @@
                 <tr>
                     <th>Motivo da Devolução</th>
                     <th>Quantidade</th>
-                    <th>Status - ACCEPTED</th>
-                    <th>Status - PROCESSING</th>
-                    <th>Status - CANCELLED</th>
+                    <th>Devolução Aceita</th>
+                    <th>Devolução Processando</th>
+                    <th>Devolução Cancelada</th>
                     <th>Devolução Paga pelo Vendedor (R$)</th> <!-- Nova coluna -->
                 </tr>
             </thead>
@@ -33,10 +33,10 @@
             </tbody>
         </table>
 
+        <!-- Total Pago pelo Vendedor -->
         <div id="total-vendedor" class="total-container">
             <p><strong>Total pago pelo vendedor: R$ <span id="total-vendedor-valor">0.00</span></strong></p>
         </div> <!-- Novo campo para mostrar o total -->
-
     </div>
 
     <script>
@@ -131,7 +131,6 @@
                 const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
                 tableBody.innerHTML = '';  // Limpa a tabela antes de adicionar novos dados
 
-                // Preenche a tabela com os motivos, suas quantidades e o valor do frete pago
                 for (let motivo in motivoContagem) {
                     const row = tableBody.insertRow();
                     row.insertCell(0).textContent = motivo;
@@ -139,11 +138,14 @@
                     row.insertCell(2).textContent = motivoContagem[motivo].statusCount.ACCEPTED;
                     row.insertCell(3).textContent = motivoContagem[motivo].statusCount.PROCESSING;
                     row.insertCell(4).textContent = motivoContagem[motivo].statusCount.CANCELLED;
-                    row.insertCell(5).textContent = motivoContagem[motivo].vendedorFrete.toFixed(2);  // Exibe o valor do frete com 2 casas decimais
+                    row.insertCell(5).textContent = motivoContagem[motivo].vendedorFrete.toFixed(2);
                 }
 
                 // Exibe o valor total pago pelo vendedor
                 document.getElementById('total-vendedor-valor').textContent = totalPagoVendedor.toFixed(2);
+
+                // Exibe o campo de "Total pago pelo vendedor"
+                document.getElementById('total-vendedor').style.display = 'flex';  // Torna visível após o carregamento da tabela
             })
             .catch(error => {
                 console.error('Erro ao enviar arquivo:', error);
