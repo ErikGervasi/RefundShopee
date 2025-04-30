@@ -196,3 +196,28 @@ body {
         font-size: 22px;  /* Ajusta o tamanho da fonte para telas pequenas */
     }
 }
+
+/* Estilo do texto no canto inferior direito */
+.footer {
+    position: fixed;
+    bottom: 10px; /* Distância do fundo da tela */
+    right: 10px; /* Distância da lateral direita da tela */
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo semitransparente */
+    padding: 10px 20px;
+    border-radius: 5px; /* Deixa o fundo arredondado */
+    z-index: 1000; /* Garante que fique por cima de outros elementos */
+}
+
+/* Estilo do link dentro do rodapé */
+.footer a {
+    color: white;
+    text-decoration: none; /* Remove o sublinhado */
+}
+
+.footer a:hover {
+    text-decoration: underline; /* Adiciona sublinhado quando passar o mouse */
+}
+
