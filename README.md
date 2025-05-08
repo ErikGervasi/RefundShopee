@@ -1,32 +1,21 @@
 # RefundShopee
-📌 Visão Geral
-O RefundShopee é uma aplicação web projetada para facilitar o entendimento e o cálculo de prejuízos de reembolsos e devoluções realizados pelos clientes da Shopee. A aplicação permite que vendedores façam upload da tabela de Excel gerada pela Shopee, que contém informações sobre reembolsos e devoluções, facilitando a leitura e análise dessas informações, que geralmente são de difícil compreensão.
 
-🚀 Funcionalidades
-Upload de Tabelas Excel: Permite que vendedores façam o upload da tabela gerada pela Shopee.
+## 📌 Visão Geral
 
-Facilidade de Leitura: A aplicação interpreta os dados da tabela e apresenta as informações de forma mais clara.
+O **RefundShopee** é uma aplicação web desenvolvida para vendedores da Shopee que desejam entender de forma clara os dados de reembolsos e devoluções fornecidos pela plataforma. A Shopee gera uma tabela em Excel com essas informações, mas seu formato é de difícil compreensão. O RefundShopee resolve esse problema ao permitir o upload da tabela, interpretando e exibindo os dados de maneira acessível e com cálculo automático de prejuízos.
 
-Cálculo de Prejuízo: Calcula automaticamente o valor do prejuízo com base nos reembolsos e devoluções.
+## 🚀 Funcionalidades
 
-Visualização de Dados: Exibe os dados de forma organizada, permitindo aos vendedores uma visão rápida dos impactos financeiros.
+- 📄 Upload da planilha gerada pela Shopee
+- 🔍 Interpretação e organização dos dados de reembolso
+- 💸 Cálculo automático do prejuízo
+- 📊 Visualização clara e objetiva das informações
 
-🛠️ Tecnologias Utilizadas
-HTML
+## 🛠️ Tecnologias Utilizadas
 
-CSS
-
-JavaScript
-
-Node.js (para o backend)
-
-Bibliotecas de Manipulação de Excel (ex: xlsx.js)
-
-📂 Estrutura do Projeto
-public/: Arquivos públicos acessíveis pela aplicação.
-
-uploads/: Diretório para armazenamento de arquivos Excel enviados pelos usuários.
-
-server.js: Arquivo principal do servidor Node.js.
-
-package.json: Gerenciador de dependências e scripts do projeto.
+- HTML
+- CSS
+- JavaScript
+- Node.js
+- Express
+- Bibliotecas para leitura de arquivos Excel
