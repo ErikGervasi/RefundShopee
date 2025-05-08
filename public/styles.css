@@ -1,11 +1,9 @@
-/* Resetando margens e padding para garantir que não haja estilos indesejados */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Estilo do body e fundo */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #f4f7fb;
@@ -18,7 +16,6 @@ body {
     padding: 20px;
 }
 
-/* Centralizar o conteúdo da página */
 .container {
     width: 100%;
     max-width: 950px;
@@ -30,12 +27,10 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
-/* Efeito de hover para o container */
 .container:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* Título principal */
 .title {
     font-size: 32px;
     font-weight: bold;
@@ -44,7 +39,6 @@ body {
     color: #2c3e50;
 }
 
-/* Estilo do título da tabela */
 .table-title {
     font-size: 24px;
     font-weight: 600;
@@ -53,7 +47,6 @@ body {
     color: #34495e;
 }
 
-/* Estilo do formulário */
 .upload-form {
     display: flex;
     flex-direction: column;
@@ -61,7 +54,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* Estilo do input de arquivo */
 .file-input {
     padding: 12px;
     font-size: 16px;
@@ -72,13 +64,11 @@ body {
     transition: border-color 0.3s ease;
 }
 
-/* Mudança na borda do input de arquivo ao focar */
 .file-input:focus {
     border-color: #4CAF50;
     outline: none;
 }
 
-/* Estilo do botão de envio */
 .submit-btn {
     background-color: #4CAF50;
     color: white;
@@ -90,13 +80,11 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Efeito de hover para o botão */
 .submit-btn:hover {
     background-color: #45a049;
     transform: scale(1.05);
 }
 
-/* Estilo da tabela */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -134,18 +122,16 @@ body {
     cursor: pointer;
 }
 
-/* Estilo para a última coluna de valor */
 .data-table td:last-child {
     font-weight: 600;
     color: #860606;
 }
 
-/* Estilo do total pago pelo vendedor */
 #total-vendedor {
-    display: none;  /* Inicialmente oculto */
+    display: none;
     margin-top: 30px;
     padding: 20px;
-    background-color: #7a0404;  /* Cor de fundo verde */
+    background-color: #7a0404;
     color: white;
     border-radius: 8px;
     font-size: 20px;
@@ -155,19 +141,16 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Destaque para o valor total */
 #total-vendedor-valor {
-    font-size: 24px;  /* Tamanho maior para o valor */
+    font-size: 24px;
     font-weight: 700;
     color: #fff;
 }
 
-/* Efeito ao passar o mouse (hover) sobre o total */
 #total-vendedor:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);  /* Aumenta o sombreamento */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* Responsividade - ajustes para telas menores */
 @media (max-width: 768px) {
     .container {
         width: 100%;
@@ -193,31 +176,28 @@ body {
     }
 
     #total-vendedor-valor {
-        font-size: 22px;  /* Ajusta o tamanho da fonte para telas pequenas */
+        font-size: 22px;
     }
 }
 
-/* Estilo do texto no canto inferior direito */
 .footer {
     position: fixed;
-    bottom: 10px; /* Distância do fundo da tela */
-    right: 10px; /* Distância da lateral direita da tela */
+    bottom: 10px;
+    right: 10px;
     font-size: 14px;
     font-weight: bold;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.6); /* Fundo semitransparente */
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 10px 20px;
-    border-radius: 5px; /* Deixa o fundo arredondado */
-    z-index: 1000; /* Garante que fique por cima de outros elementos */
+    border-radius: 5px;
+    z-index: 1000;
 }
 
-/* Estilo do link dentro do rodapé */
 .footer a {
     color: white;
-    text-decoration: none; /* Remove o sublinhado */
+    text-decoration: none;
 }
 
 .footer a:hover {
-    text-decoration: underline; /* Adiciona sublinhado quando passar o mouse */
+    text-decoration: underline;
 }
-
