@@ -10,7 +10,6 @@
     <div class="container">
         <h1 class="title">Controle de Reembolso e Devoluções Shopee</h1>
 
-        <!-- Formulário para upload -->
         <form id="upload-form" enctype="multipart/form-data" class="upload-form">
             <input type="file" id="file-input" name="file" accept=".xlsx,.xls" required class="file-input">
             <button type="submit" class="submit-btn">Enviar</button>
@@ -25,22 +24,19 @@
                     <th>Devolução Aceita</th>
                     <th>Devolução Processando</th>
                     <th>Devolução Cancelada</th>
-                    <th>Devolução Paga pelo Vendedor (R$)</th> <!-- Nova coluna -->
+                    <th>Devolução Paga pelo Vendedor (R$)</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Os dados da tabela serão inseridos aqui -->
             </tbody>
         </table>
 
-        <!-- Total Pago pelo Vendedor -->
         <div id="total-vendedor" class="total-container">
             <p><strong>Total pago pelo vendedor: R$ <span id="total-vendedor-valor">0.00</span></strong></p>
-        </div> <!-- Novo campo para mostrar o total -->
+        </div>
     </div>
 
     <script>
-        // Mapeamento de códigos para nomes amigáveis
         const motivoMap = {
             'WRONG_ITEM': 'Item Errado',
             'ITEM_NOT_FIT': 'Não Serviu',
@@ -52,15 +48,12 @@
         };
 
         document.getElementById('upload-form').addEventListener('submit', function(event) {
-            event.preventDefault();  // Previne o envio do formulário e recarregamento da página
+            event.preventDefault();
 
             const formData = new FormData();
             const fileInput = document.getElementById('file-input');
             formData.append('file', fileInput.files[0]);
 
-            console.log('Arquivo enviado:', fileInput.files[0]);  // Verifica o arquivo enviado
-
-            // Envia o arquivo para o backend local
             fetch('http://localhost:3001/upload', {
                 method: 'POST',
                 body: formData
@@ -69,33 +62,27 @@
                 if (!response.ok) {
                     throw new Error('Falha na requisição: ' + response.status);
                 }
-                return response.json();  // Processa a resposta como JSON
+                return response.json();
             })
             .then(data => {
                 const motivoContagem = {};
-                let totalPagoVendedor = 0;  // Inicializa o total pago pelo vendedor
+                let totalPagoVendedor = 0;
 
                 data.forEach(item => {
                     let motivo = item.motivoDevolucao;
                     const status = item.status;
 
-                    // Ignora registros com motivo ou status vazio
                     if (!motivo || motivo.trim() === '' || !status || status.trim() === '') {
                         return;
                     }
 
-                    // Se houver comentário após o motivo (separado por vírgula), pegamos apenas a parte antes da vírgula
                     if (motivo.includes(',')) {
                         motivo = motivo.split(',')[0];
                     }
 
-                    // Salva o motivo original ANTES de mapear
                     const motivoOriginal = motivo;
-
-                    // Mapeia o motivo para o nome amigável
                     const motivoNomeAmigavel = motivoMap[motivoOriginal] || motivoOriginal;
 
-                    // Inicializa a contagem do motivo, se necessário
                     if (!motivoContagem[motivoNomeAmigavel]) {
                         motivoContagem[motivoNomeAmigavel] = {
                             count: 0,
@@ -104,21 +91,18 @@
                                 PROCESSING: 0,
                                 CANCELLED: 0
                             },
-                            vendedorFrete: 0  // Inicializa o frete pago como 0
+                            vendedorFrete: 0
                         };
                     }
 
-                    // Incrementa a contagem do motivo
                     motivoContagem[motivoNomeAmigavel].count += 1;
 
-                    // Verifica se o status é "ACCEPTED" e se o motivo é um dos que requer pagamento de frete
                     if (status === 'ACCEPTED') {
                         motivoContagem[motivoNomeAmigavel].statusCount.ACCEPTED += 1;
 
-                        // Se o motivo for um dos que o vendedor paga o frete, soma 10 reais
                         if (['WRONG_ITEM', 'ITEM_MISSING', 'FUNCTIONAL_DMG', 'DAMAGED_OTHERS'].includes(motivoOriginal)) {
-                            motivoContagem[motivoNomeAmigavel].vendedorFrete += 10;  // Adiciona R$ 10 para cada item "ACCEPTED"
-                            totalPagoVendedor += 10;  // Adiciona ao total pago pelo vendedor
+                            motivoContagem[motivoNomeAmigavel].vendedorFrete += 10;
+                            totalPagoVendedor += 10;
                         }
                     } else if (status === 'PROCESSING') {
                         motivoContagem[motivoNomeAmigavel].statusCount.PROCESSING += 1;
@@ -127,9 +111,8 @@
                     }
                 });
 
-                // Exibe a contagem na tabela
                 const tableBody = document.getElementById('tabela-devolucoes').getElementsByTagName('tbody')[0];
-                tableBody.innerHTML = '';  // Limpa a tabela antes de adicionar novos dados
+                tableBody.innerHTML = '';
 
                 for (let motivo in motivoContagem) {
                     const row = tableBody.insertRow();
@@ -141,11 +124,8 @@
                     row.insertCell(5).textContent = motivoContagem[motivo].vendedorFrete.toFixed(2);
                 }
 
-                // Exibe o valor total pago pelo vendedor
                 document.getElementById('total-vendedor-valor').textContent = totalPagoVendedor.toFixed(2);
-
-                // Exibe o campo de "Total pago pelo vendedor"
-                document.getElementById('total-vendedor').style.display = 'flex';  // Torna visível após o carregamento da tabela
+                document.getElementById('total-vendedor').style.display = 'flex';
             })
             .catch(error => {
                 console.error('Erro ao enviar arquivo:', error);
@@ -154,12 +134,10 @@
         });
     </script>
 
-<div class="footer">
-    <a href="https://github.com/ErikGervasi" target="_blank" style="color: white; text-decoration: none;">
-        Desenvolvido por Erik Gervasi
-    </a>
-</div>
-
-    
+    <div class="footer">
+        <a href="https://github.com/ErikGervasi" target="_blank" style="color: white; text-decoration: none;">
+            Desenvolvido por Erik Gervasi
+        </a>
+    </div>
 </body>
 </html>
